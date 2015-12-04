@@ -73,19 +73,19 @@ class UserManager implements UserManagerInterface
         }
 
         if (array_key_exists('firstname', $data)) {
-            $user->setUsername($data['firstname']);
+            $user->setFirstname($data['firstname']);
         }
 
         if (array_key_exists('lastname', $data)) {
-            $user->setUsername($data['lastname']);
+            $user->setLastname($data['lastname']);
         }
 
         if (array_key_exists('email', $data)) {
-            $user->setUsername($data['email']);
+            $user->setEmail($data['email']);
         }
 
         if (array_key_exists('website', $data)) {
-            $user->setUsername($data['website']);
+            $user->setWebsite($data['website']);
         }
 
         if (!$id) {

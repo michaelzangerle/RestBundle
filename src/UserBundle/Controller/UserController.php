@@ -55,7 +55,7 @@ class UserController extends RestController
     public function postAction(Request $request)
     {
         // TODO error case
-        $user = $this->getManager()->saveUser($request->attributes->all());
+        $user = $this->getManager()->saveUser($request->request->all());
 
         return $this->createResponse($user, 200);
     }
