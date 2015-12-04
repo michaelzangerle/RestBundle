@@ -25,11 +25,13 @@
     },
     "email": {
       "description": "The email address of the user",
-      "type": "email"
+      "type": "string",
+      "format": "email"
     },
     "website": {
       "description": "The url to the website of the user",
-      "type": "uri"
+      "type": "string",
+      "format": "uri"
     }
   },
   "required": [
