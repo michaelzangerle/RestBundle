@@ -1,10 +1,14 @@
 {
   "title": "Example Schema",
   "type": "object",
+  "actions": {
+    "test": "Description for test action"
+  },
   "properties": {
     "username": {
       "description": "The username of a user",
-      "type": "string"
+      "type": "string",
+      "minLength": 3
     },
     "firstname": {
       "description": "The firstname of a user",

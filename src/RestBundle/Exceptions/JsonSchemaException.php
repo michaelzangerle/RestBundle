@@ -16,7 +16,7 @@ class JsonSchemaException extends HttpException
     {
         $messages = [];
         foreach ($errors as $error) {
-            $messages[] = $error->getProperty().': '.$error->getViolation();
+            $messages[$error->getProperty()] = $error->getViolation();
         }
 
         parent::__construct(400, json_encode($messages));

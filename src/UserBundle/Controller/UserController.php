@@ -7,12 +7,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use UserBundle\Manager\UserManagerInterface;
 use RestBundle\Annotations\ValidationSchema;
+use RestBundle\Annotations\HTTPOption;
 
 class UserController extends RestController
 {
     /**
      * Gets all users from the database
-     *
+     * @HTTPOption(method="GET")
      * @return Response
      */
     public function cgetAction()
@@ -24,7 +25,7 @@ class UserController extends RestController
 
     /**
      * Returns a user specified by a given id
-     *
+     * @HTTPOption(method="GET")
      * @param $id
      *
      * @return Response
@@ -41,6 +42,7 @@ class UserController extends RestController
 
     /**
      * Creates a new user
+     * @HTTPOption(method="POST")
      * @ValidationSchema(schema="@UserBundle/Resources/config/schema/user/test.json")
      *
      * @param Request $request
@@ -85,6 +87,14 @@ class UserController extends RestController
         $user = $this->getManager()->saveUser($id, $request->attributes->all());
 
         return $this->createResponse($user, 200);
+    }
+
+    public function deleteAction($id)
+    {
+        // TODO error case
+//        $this->getManager()->deleteUser($id);
+
+        return $this->createResponse(null, 204);
     }
 
     /**

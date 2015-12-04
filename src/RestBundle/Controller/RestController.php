@@ -5,6 +5,8 @@ namespace RestBundle\Controller;
 
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Routing\ClassResourceInterface;
+use RestBundle\Annotations\HTTPOption;
+use RestBundle\Annotations\ValidationSchema;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -27,7 +29,35 @@ abstract class RestController extends FOSRestController implements ClassResource
      */
     public function optionsAction()
     {
-        $view = $this->view(['empty for now!']);
+        // TODO make configurable
+        $reader = $this->get('annotation_reader');
+        $locator = $this->get('file_locator');
+
+        $validationSchemaClass = 'RestBundle\\Annotations\\ValidationSchema';
+        $optionClass = 'RestBundle\\Annotations\\HTTPOption';
+
+        $response = ['OPTION' => ''];
+        $className = get_class($this);
+        $reflectionClass = new \ReflectionClass($className);
+        foreach ($reflectionClass->getMethods() as $method) {
+            /** @var HTTPOption $option */
+            $option = $reader->getMethodAnnotation($method, $optionClass);
+            if ($option && $option->getMethod()) {
+                /** @var ValidationSchema $schemaAnotation */
+                $schemaAnnotation = $reader->getMethodAnnotation($method, $validationSchemaClass);
+                $schema = null;
+                if ($schemaAnnotation && $schemaAnnotation->getSchema()) {
+                    $schemaUrl = $locator->locate($schemaAnnotation->getSchema());
+                    $schema = json_decode(file_get_contents($schemaUrl), true);
+                }
+
+                $response[$option->getMethod()] = $schema ? $schema : '';
+            }
+        }
+
+        // TODO caching?
+
+        $view = $this->view($response,200,['Allow' => implode(', ',array_keys($response))]);
 
         return $this->handleView($view);
     }
