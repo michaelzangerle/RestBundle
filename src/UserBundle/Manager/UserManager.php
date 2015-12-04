@@ -60,8 +60,10 @@ class UserManager implements UserManagerInterface
      *
      * @return mixed
      */
-    public function saveUser($id, $data)
+    public function saveUser($data, $id = null)
     {
-
+        // Business Logic comes here
+        echo "process user";
+        return null;
     }
 }

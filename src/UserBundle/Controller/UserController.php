@@ -6,6 +6,7 @@ use RestBundle\Controller\RestController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use UserBundle\Manager\UserManagerInterface;
+use RestBundle\Annotations\ValidationSchema;
 
 class UserController extends RestController
 {
@@ -40,12 +41,18 @@ class UserController extends RestController
 
     /**
      * Creates a new user
+     * @ValidationSchema(schema="@UserBundle/Resources/config/schema/user/test.json")
      *
      * @param Request $request
+     *
+     * @return Response
      */
     public function postAction(Request $request)
     {
+        // TODO error case
+        $user = $this->getManager()->saveUser($request->attributes->all());
 
+        return $this->createResponse($user, 200);
     }
 
     /**
@@ -53,10 +60,15 @@ class UserController extends RestController
      *
      * @param $id
      * @param Request $request
+     *
+     * @return Response
      */
     public function putAction($id, Request $request)
     {
+        // TODO error case
+        $user = $this->getManager()->saveUser($id, $request->attributes->all());
 
+        return $this->createResponse($user, 200);
     }
 
     /**
@@ -64,10 +76,15 @@ class UserController extends RestController
      *
      * @param $id
      * @param Request $request
+     *
+     * @return Response
      */
     public function patchAction($id, Request $request)
     {
+        // TODO error case
+        $user = $this->getManager()->saveUser($id, $request->attributes->all());
 
+        return $this->createResponse($user, 200);
     }
 
     /**

@@ -68,5 +68,7 @@ swiftmailer:
 
 # FOSRest Configuration
 fos_rest:
+    exception:
+        enabled: true
     routing_loader:
         default_format: json

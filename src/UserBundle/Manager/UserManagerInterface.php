@@ -32,5 +32,5 @@ interface UserManagerInterface
      *
      * @return mixed
      */
-    public function saveUser($id, $data);
+    public function saveUser($data, $id = null);
 }

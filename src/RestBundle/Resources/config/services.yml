@@ -1,0 +1,10 @@
+services:
+
+  rest.kernelListener:
+      class: RestBundle\Listener\KernelListener
+      arguments:
+        - @annotation_reader
+        - @file_locator
+        - @json_schema.validator
+      tags:
+        - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }

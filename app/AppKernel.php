@@ -18,6 +18,7 @@ class AppKernel extends Kernel
 
             new JMS\SerializerBundle\JMSSerializerBundle(),
             new FOS\RestBundle\FOSRestBundle(),
+            new HadesArchitect\JsonSchemaBundle\JsonSchemaBundle(),
             new RestBundle\RestBundle(),
             new UserBundle\UserBundle(),
         );
