@@ -3,6 +3,8 @@
 namespace UserBundle\Manager;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityNotFoundException;
+use UserBundle\Entity\User;
 use UserBundle\Repository\UserRepository;
 
 /**
@@ -35,7 +37,7 @@ class UserManager implements UserManagerInterface
     }
 
     /**
-     * @return mixed
+     * @return User[]
      */
     public function getAllUsers()
     {
@@ -45,7 +47,7 @@ class UserManager implements UserManagerInterface
     /**
      * @param $id
      *
-     * @return mixed
+     * @return User
      */
     public function getUserById($id)
     {
@@ -55,15 +57,82 @@ class UserManager implements UserManagerInterface
     /**
      * Saves a user with the given data
      *
-     * @param $id
      * @param $data
      *
-     * @return mixed
+     * @param $id
+     *
+     * @return User
+     * @throws EntityNotFoundException
      */
     public function saveUser($data, $id = null)
     {
-        // Business Logic comes here
-        echo "process user";
-        return null;
+        $user = $this->getUser($id);
+
+        if (array_key_exists('username', $data)) {
+            $user->setUsername($data['username']);
+        }
+
+        if (array_key_exists('firstname', $data)) {
+            $user->setUsername($data['firstname']);
+        }
+
+        if (array_key_exists('lastname', $data)) {
+            $user->setUsername($data['lastname']);
+        }
+
+        if (array_key_exists('email', $data)) {
+            $user->setUsername($data['email']);
+        }
+
+        if (array_key_exists('website', $data)) {
+            $user->setUsername($data['website']);
+        }
+
+        if (!$id) {
+            $this->em->persist($user);
+        }
+        $this->em->flush();
+
+        return $user;
+    }
+
+    /**
+     * Deletes a user
+     *
+     * @param $id
+     *
+     * @throws EntityNotFoundException
+     */
+    public function deleteUser($id)
+    {
+        $user = $this->repository->find($id);
+        if (!$user) {
+            throw new EntityNotFoundException();
+        }
+
+        $this->em->remove($user);
+        $this->em->flush();
+    }
+
+    /**
+     * Gets a user for to create or update entity
+     *
+     * @param $id
+     *
+     * @return User
+     * @throws EntityNotFoundException
+     */
+    private function getUser($id)
+    {
+        if (!$id) {
+            return new User();
+        } else {
+            $user = $this->repository->find($id);
+            if (!$user) {
+                throw new EntityNotFoundException();
+            }
+
+            return $user;
+        }
     }
 }

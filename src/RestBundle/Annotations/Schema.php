@@ -6,23 +6,24 @@ use Doctrine\Common\Annotations\Annotation;
 
 /**
  * @Annotation
+ *
  * Annotation used for validation of http requests with a json schema
  */
-class ValidationSchema
+class Schema
 {
     /**
      * @var string
      */
-    private $schema;
+    private $pathToSchema;
 
     /**
      * Returns the path to the json schema
      *
      * @return string
      */
-    public function getSchema()
+    public function getPathToSchema()
     {
-        return $this->schema;
+        return $this->pathToSchema;
     }
 
     /**
@@ -30,10 +31,10 @@ class ValidationSchema
      */
     public function __construct(array $options)
     {
-        if (isset($options['schema'])) {
-            $this->schema = $options['schema'];
+        if (isset($options['path'])) {
+            $this->pathToSchema = $options['path'];
         }
 
-        unset($options['schema']);
+        unset($options['path']);
     }
 }

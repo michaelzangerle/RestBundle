@@ -6,9 +6,10 @@ use Doctrine\Common\Annotations\Annotation;
 
 /**
  * @Annotation
- * Annotation used for generating the options response
+ *
+ * Annotation used for generating the options response and allow header
  */
-class HTTPOption
+class Option
 {
     /**
      * @var string

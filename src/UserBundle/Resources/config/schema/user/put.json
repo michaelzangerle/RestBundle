@@ -1,0 +1,41 @@
+{
+  "title": "User Schema for PUT",
+  "type": "object",
+  "actions": {
+    "test": "Description for test action"
+  },
+  "properties": {
+    "username": {
+      "description": "The username of the user",
+      "type": "string",
+      "minLength": 5,
+      "maxLength": 20
+    },
+    "firstname": {
+      "description": "The firstname of the user",
+      "type": "string",
+      "minLength": 2,
+      "maxLenght": 20
+    },
+    "lastname": {
+      "description": "The lastname of the user",
+      "type": "string",
+      "minLength": 2,
+      "maxLenght": 20
+    },
+    "email": {
+      "description": "The email address of the user",
+      "type": "email"
+    },
+    "website": {
+      "description": "The url to the website of the user",
+      "type": "uri"
+    }
+  },
+  "required": [
+    "username",
+    "firstname",
+    "lastname",
+    "email"
+  ]
+}

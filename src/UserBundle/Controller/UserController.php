@@ -6,14 +6,16 @@ use RestBundle\Controller\RestController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use UserBundle\Manager\UserManagerInterface;
-use RestBundle\Annotations\ValidationSchema;
-use RestBundle\Annotations\HTTPOption;
+
+use RestBundle\Annotations\Schema;
+use RestBundle\Annotations\Option;
 
 class UserController extends RestController
 {
     /**
      * Gets all users from the database
-     * @HTTPOption(method="GET")
+     * @Option(method="GET")
+     *
      * @return Response
      */
     public function cgetAction()
@@ -25,7 +27,8 @@ class UserController extends RestController
 
     /**
      * Returns a user specified by a given id
-     * @HTTPOption(method="GET")
+     * @Option(method="GET")
+     *
      * @param $id
      *
      * @return Response
@@ -34,7 +37,7 @@ class UserController extends RestController
     {
         $user = $this->getManager()->getUserById($id);
         if (!$user) {
-            return $this->createResponse($user, 404);
+            return $this->createResponse(null, 404);
         }
 
         return $this->createResponse($user);
@@ -42,8 +45,8 @@ class UserController extends RestController
 
     /**
      * Creates a new user
-     * @HTTPOption(method="POST")
-     * @ValidationSchema(schema="@UserBundle/Resources/config/schema/user/test.json")
+     * @Option(method="POST")
+     * @Schema(path="@UserBundle/Resources/config/schema/user/post.json")
      *
      * @param Request $request
      *
@@ -59,6 +62,8 @@ class UserController extends RestController
 
     /**
      * Updates an existing user completely
+     * @Option(method="PUT")
+     * @Schema(path="@UserBundle/Resources/config/schema/user/put.json")
      *
      * @param $id
      * @param Request $request
@@ -75,6 +80,8 @@ class UserController extends RestController
 
     /**
      * Makes a partial update of an existing user
+     * @Option(method="PATCH")
+     * @Schema(path="@UserBundle/Resources/config/schema/user/patch.json")
      *
      * @param $id
      * @param Request $request
@@ -89,10 +96,18 @@ class UserController extends RestController
         return $this->createResponse($user, 200);
     }
 
+    /**
+     * Deletes a user by id
+     * @Option(method="DELETE")
+     *
+     * @param $id
+     *
+     * @return Response
+     */
     public function deleteAction($id)
     {
         // TODO error case
-//        $this->getManager()->deleteUser($id);
+        $this->getManager()->deleteUser($id);
 
         return $this->createResponse(null, 204);
     }

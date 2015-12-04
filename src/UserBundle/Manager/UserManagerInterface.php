@@ -2,6 +2,8 @@
 
 namespace UserBundle\Manager;
 
+use UserBundle\Entity\User;
+
 /**
  * Interface UserManagerInterface
  * @package UserBundle\Manager
@@ -11,7 +13,7 @@ interface UserManagerInterface
     /**
      * Gets all users
      *
-     * @return mixed
+     * @return User[]
      */
     public function getAllUsers();
 
@@ -20,7 +22,7 @@ interface UserManagerInterface
      *
      * @param $id
      *
-     * @return mixed
+     * @return User
      */
     public function getUserById($id);
 
@@ -30,7 +32,14 @@ interface UserManagerInterface
      * @param $id
      * @param $data
      *
-     * @return mixed
+     * @return User
      */
     public function saveUser($data, $id = null);
+
+    /**
+     * Deletes a user by id
+     *
+     * @param $id
+     */
+    public function deleteUser($id);
 }

@@ -4,7 +4,7 @@ namespace RestBundle\Listener;
 
 use Doctrine\Common\Annotations\Reader;
 use HadesArchitect\JsonSchemaBundle\Validator\ValidatorServiceInterface;
-use RestBundle\Annotations\ValidationSchema;
+use RestBundle\Annotations\Schema;
 use RestBundle\Exceptions\JsonSchemaException;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
@@ -42,7 +42,7 @@ class KernelListener
     }
 
     /**
-     * Checks for annotations of type @ValidationSchema.
+     * Verifies the request body if a schema has been defined with @Schema
      *
      * @param FilterControllerEvent $event
      */
@@ -54,32 +54,31 @@ class KernelListener
         $validateAnnotations = array_filter(
             $annotations,
             function ($annotation) {
-                return $annotation instanceof ValidationSchema;
+                return $annotation instanceof Schema;
             }
         );
 
         $data = $event->getRequest()->request->all();
 
-        /** @var ValidationSchema $validateAnnotation */
+        /** @var Schema $validateAnnotation */
         foreach ($validateAnnotations as $validateAnnotation) {
-            if (!empty($validateAnnotation->getSchema())) {
+            if (!empty($validateAnnotation->getPathToSchema())) {
                 $this->validate($validateAnnotation, $data);
             }
         }
     }
 
     /**
-     * Get the schema from within the appropriate bundle and checks it against
-     * the json content provided by the request.
+     * Validates the received data with the given json schema
      *
-     * @param ValidationSchema $annotation
+     * @param Schema $annotation
      * @param array $data
      *
      * @throws JsonSchemaException
      */
-    public function validate(ValidationSchema $annotation, $data)
+    public function validate(Schema $annotation, $data)
     {
-        $schemaUrl = $this->fileLocator->locate($annotation->getSchema());
+        $schemaUrl = $this->fileLocator->locate($annotation->getPathToSchema());
         $schema = json_decode(file_get_contents($schemaUrl));
         $data = json_decode(json_encode($data));
 
@@ -89,7 +88,7 @@ class KernelListener
     }
 
     /**
-     * Returns the called method
+     * Creates the method needed from the class- and method name
      *
      * @param FilterControllerEvent $event
      *
